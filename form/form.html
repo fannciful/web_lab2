@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Опитування</title>
+    <link rel="stylesheet" href="form.css">
+</head>
+<body>
+    <div id="hero">
+        <div class="navbar">
+            <div class="logo">Kolizey.</div>
+            <div class="user">
+                <button type="button" onclick="window.location.href='form.html'">Sign in</button>
+                <input id="menu-toggle" type="checkbox" />
+                <label class='menu-button-container' for="menu-toggle">
+                    <div class='menu-button'></div>
+                </label>
+                <ul class="menu">
+                    <li><a href="index.html">ABOUT</a></li>
+                    <li><a href="index.html">OFFERS</a></li>
+                    <li><a href="index.html">TRAINERS</a></li>
+                    <li><a href="index.html">PRICE</a></li>
+                    <li><a href="index.html">CONTACTS</a></li>
+                </ul>
+            </div>
+        </div>
+    <h1>Опитування</h1>
+    <form id="surveyForm1">
+        <label for="question1">Ваш рівень фізичної підготовки:</label><br>
+        <select id="question1" name="question1">
+            <option value="PanasaMyrnogo">вул. Панаса Мирного,24</option>
+            <option value="Shevchenka">вул. Шевченка,21</option>
+            <option value="Franka">вул. Івана Франка,4</option>
+            <option value="Zelena">вул. Зелена,55</option>
+            <option value="Sykhivska">вул. Сихівська,8</option>
+        </select><br><br>
+
+        <label for="question2">Виберіть вид тренування:</label>
+        <select id="question2" name="question2">
+            <option value="Yoga">Yoga</option>
+            <option value="Spain">Spain Class</option>
+            <option value="Hiit">HIIT</option>
+            <option value="Pilates">Pilates</option>
+            <option value="Pump">Body Pump</option>
+            <option value="Cardio">Cardio Kickboxing</option>
+            <option value="Intensive">Intensive Training</option>
+            <option value="Zumba">Zumba</option>
+            <option value="Boot">Boot Camp</option>
+        </select><br><br>
+
+        <label for="question3">Оберіть тип залу:</label><br>
+        <input type="radio" id="question3-type1" name="question3" value="Cardio Zone" required>Кардіо-зона
+        <input type="radio" id="question3-type2" name="question3" value="Force Zone">Силова зона
+        <input type="radio" id="question3-type3" name="question3" value="Functional Zone">Функціональна зона<br><br>
+
+        <label for="question4">Ваш рівень фізичної підготовки:</label><br>
+        <input type="radio" id="question4-low" name="question4" value="low" required>Слабкий
+        <input type="radio" id="question4-medium" name="question4" value="medium">Середній
+        <input type="radio" id="question4-high" name="question4" value="high">Високий<br><br>
+
+        <label for="question5">Найбільш зручний час для відвідування тренувань:</label><br>
+        <input type="datetime-local" id="question5" name="eventDateTime"><br><br>   
+
+        <label for="question6">Вкажіть оптимальну для вас кількість тренувань в тиждень</label><br>
+        <input type="number" id="question6" name="averageAmount" min="0" max="7"><br><br>
+
+
+        <label for="question7">Ваша стать:</label><br>
+        <input type="radio" id="question7-male" name="question7" value="male" required>Чоловіча
+        <input type="radio" id="question7-female" name="question7" value="female">Жіноча<br><br>
+
+
+        <label for="question8">Ваш вік:</label><br>
+        <input type="number" id="question8" name="age" min="10" max="99"><br><br>
+
+        <label for="question9">Як ви оцінюєте чистоту в залі?</label><br>
+        <input type="range" id="question9" name="clearness" min="1" max="10" value="5"><br><br>
+
+        <label for="question10">З якою метою ви відвідуєте зал?</label><br>
+        <textarea id="question10" name="reason" rows="4" cols="50"></textarea><br><br>
+
+        <label for="question11">Залиште ваш відгук:</label><br>
+        <textarea id="question11" name="feedback" rows="4" cols="50"></textarea><br><br>
+
+
+        <div class="button-container">
+            <input type="submit" value="Відправити">
+            <button id="showResults">Показати результати</button>
+        </div>
+        <ul id="surveyResults"></ul>
+
+    </form>
+
+<script>
+    const surveys1 = JSON.parse(localStorage.getItem('surveys1')) || [];
+
+    const showResultsButton = document.getElementById('showResults');
+    const surveyResults = document.getElementById('surveyResults');
+    
+    showResultsButton.addEventListener('click', () => {
+        displayResults();
+    });
+    
+    function displayResults() {
+        surveyResults.innerHTML = '';
+    
+        const criteria = {
+            yogaTraining: 0,
+            cardyoType: 0,
+            mediumPhysical: 0,
+            averageAmount: 0,
+            femaleHuman: 0,
+            agePeople: 0,
+            satisfiedCleanliness: 0,
+            notSatisfiedCleanliness: 0
+        };
+    
+        surveys1.forEach(survey => {
+            const { question2, question3, question4, question6, question7, question8, question9 } = survey;
+            if (question2 === 'Yoga') {
+                criteria.yogaTraining++;
+            }
+            if (question3 === 'Cardio Zone') {
+                criteria.cardyoType++;
+            }
+            if (question4 === 'medium') {
+                criteria.mediumPhysical++;
+            }
+            if (question6 >= 3 && question6 <= 5) {
+                criteria.averageAmount++;
+            }
+            if (question7 === 'female') {
+                criteria.femaleHuman++;
+            }
+            if (question8 >= 18 && question8 <= 30) {
+                criteria.agePeople++;
+            }
+            if (question9 >= 8 && question9 <= 10) {
+                criteria.satisfiedCleanliness++;
+            }
+            if (question9 >= 1 && question9 <= 4) {
+                criteria.notSatisfiedCleanliness++;
+            }
+        });
+    
+        for (const criterion in criteria) {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${criterion}: ${criteria[criterion]}`;
+            surveyResults.appendChild(listItem);
+        }
+    
+        const satisfiedCleanlinessListItem = document.createElement('li');
+        satisfiedCleanlinessListItem.textContent = `Задоволені чистотою залу: ${criteria.satisfiedCleanliness} людей`;
+        surveyResults.appendChild(satisfiedCleanlinessListItem);
+    
+        const notSatisfiedCleanlinessListItem = document.createElement('li');
+        notSatisfiedCleanlinessListItem.textContent = `Не задоволені чистотою залу: ${criteria.notSatisfiedCleanliness} людей`;
+        surveyResults.appendChild(notSatisfiedCleanlinessListItem);
+    }
+    
+    const form = document.getElementById('surveyForm1');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const survey = {};
+        for (let [key, value] of formData.entries()) {
+            survey[key] = value;
+        }
+        surveys1.push(survey);
+        localStorage.setItem('surveys1', JSON.stringify(surveys1));
+        form.reset();
+    });
+    
+</script>
+</body>
+</html>
