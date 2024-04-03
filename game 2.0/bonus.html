@@ -39,6 +39,14 @@ button:hover {
     transform: translateX(-50%);
 }
 
+#colorButtons {
+    display: flex;
+    justify-content: flex-start;
+}
+#colorButtons button {
+    margin-right: 10px;
+}
+
 </style>
 </head>
 <body onload="startGame()">
@@ -102,14 +110,15 @@ function component(width, height, color, x, y, type) {
     this.speedY = 0;    
     this.x = x;
     this.y = y;    
+    this.color = color; // Додайте колір
     this.update = function() {
         ctx = myGameArea.context;
         if (this.type == "text") {
             ctx.font = this.width + " " + this.height;
-            ctx.fillStyle = color;
+            ctx.fillStyle = this.color; // Використовуємо колір
             ctx.fillText(this.text, this.x, this.y);
         } else {
-            ctx.fillStyle = color;
+            ctx.fillStyle = this.color; // Використовуємо колір
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
     }
@@ -214,6 +223,11 @@ function clearmove() {
     myGamePiece.speedX = 0; 
     myGamePiece.speedY = 0; 
 }
+
+function changeColor(color) {
+    myGamePiece.color = color;
+}
+
 </script>
 <div style="text-align:center;width:480px;">
     <button onmousedown="moveup()" onmouseup="clearmove()" ontouchstart="moveup()">UP</button><br><br>
@@ -228,6 +242,11 @@ function clearmove() {
     <div id="bonusScore">Bonus Score: 0</div> <!-- Додано відображення бонусного рахунку -->
     <div id="topScores">Top Scores: </div>
     <div id="worstScores">Worst Scores: </div>
+</div>
+<div id="colorButtons">
+    <button onclick="changeColor('white')">White</button>
+    <button onclick="changeColor('red')">Red</button>
+    <button onclick="changeColor('green')">Green</button>
 </div>
 </body>
 </html>
